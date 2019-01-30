@@ -1,9 +1,101 @@
+@red:rgb(211, 49, 49);
+@gre:rgb(75, 75, 79);
+@ui:#23252c;
+
+
 body{
-  padding: 10vw;
+  // padding: 10vw;
+  overflow-x: hidden;
+}
+
+#inp_box{
+  
+  position: absolute;
+  right: 5vh;
+  bottom:5vh;
+  width: 40vh;
+  // height:40vh;
+  padding:0px 20px;
+  padding-bottom: 50px;
+  color:lighten(@ui,70%);
+  background-color: fade(@ui,70%);
+  
+  // width: 30vw;
+  input{
+    margin-top: 20px;
+    display: block;
+    
+  }
+  #show_title{
+    background-color: lighten(@ui,20%);
+    padding: 10px 20px;
+    &:hover{
+      background-color: lighten(@ui,10%);
+    }
+    &:active{
+      background-color: @red;
+    }
+  }
+  .inp_desc,.inp_value{
+    font-size: .5em;
+    display: block;
+    margin-left: 10px;
+    transform: translateY(5px)
+  }
+  .inp_value_td{
+    padding: 0 10px;
+    width: 10%;
+    font-size: .5em;
+  }
+ 
 }
 
 #svg1{
     background-color: whitesmoke;
     width:100vw;
-    height: 100vh;
+    height:100vh;
+    perspective: 10px;
+}
+
+.gE,.discG,{
+  transform-origin: center;
+  
+}
+
+.rPerc{
+    transform-origin: 50%;
+    
+}
+
+
+
+
+input[type=range] {
+    -webkit-appearance: none;
+    width: 200px;
+    
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+} 
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    height: 15px;
+    border-radius: 1px;
+    background-color:@gre;
+    box-shadow: 0 1px 1px #def3f8, inset 0 2px .125em #0d1112;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 25px;
+    width: 15px;
+    margin-top: -5px; /*使滑块超出轨道部分的偏移量相等*/
+    background:@red; 
+    
+    
+    
 }

@@ -1,7 +1,76 @@
-
-
+body {
+  overflow-x: hidden;
+}
+#inp_box {
+  position: absolute;
+  right: 5vh;
+  bottom: 5vh;
+  width: 40vh;
+  padding: 0px 20px;
+  padding-bottom: 50px;
+  color: #d6d8de;
+  background-color: rgba(35, 37, 44, 0.7);
+}
+#inp_box input {
+  margin-top: 20px;
+  display: block;
+}
+#inp_box #show_title {
+  background-color: #505565;
+  padding: 10px 20px;
+}
+#inp_box #show_title:hover {
+  background-color: #3a3d48;
+}
+#inp_box #show_title:active {
+  background-color: #d33131;
+}
+#inp_box .inp_desc,
+#inp_box .inp_value {
+  font-size: .5em;
+  display: block;
+  margin-left: 10px;
+  transform: translateY(5px);
+}
+#inp_box .inp_value_td {
+  padding: 0 10px;
+  width: 10%;
+  font-size: .5em;
+}
 #svg1 {
   background-color: whitesmoke;
   width: 100vw;
   height: 100vh;
+  perspective: 10px;
+}
+.gE,
+.discG {
+  transform-origin: center;
+}
+.rPerc {
+  transform-origin: 50%;
+}
+input[type=range] {
+  -webkit-appearance: none;
+  width: 200px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  height: 15px;
+  border-radius: 1px;
+  background-color: #4b4b4f;
+  box-shadow: 0 1px 1px #def3f8, inset 0 2px .125em #0d1112;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 25px;
+  width: 15px;
+  margin-top: -5px;
+  /*使滑块超出轨道部分的偏移量相等*/
+  background: #d33131;
 }
