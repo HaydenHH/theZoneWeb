@@ -1,5 +1,9 @@
 
-
+const globleColor = [c1,c2,c3]=[
+  '#FF5261',
+  '#F97617',
+  '#C49500',
+]
 window.onload=()=>{
 var inpArr = []
 
@@ -7,7 +11,7 @@ function createInp(id,max,min='1'){
 
     $('#inp_tb').append(`
         <tr>
-            <td class="inp_value_td"><p class="inp_value">&nbsp</p></td>
+            <td class="inp_value_td"><p class="inp_value">1</p></td>
             <td><input id="inp_${id}" name="${id}" type="range" value="1" min="1" max="${max}"
             min="${min}"></td>
             <td><p class="inp_desc">${id}</p></td>
@@ -27,7 +31,7 @@ let outPut = (x) => {
      return dataVal
 }
 
-function renderPer(fn,name) {
+function renderPer(fn,name,map) {
      let Inp_data = []
      for (let [i, inp] of inpArr.entries()) {
          Inp_data.push({
@@ -45,8 +49,8 @@ function renderPer(fn,name) {
          }
          // makePerspect(Inp_data)
          $('#show_title').text(`${name}`)
-         lo(fn)
-         fn(Inp_data)
+
+         fn(Inp_data,map)
      })
  }
 
@@ -65,6 +69,12 @@ let rN = (x)=>{
     return (Math.random() * x) - x
 }
 
+let dArray = (a,n,d)=>{
+   return [a+[n-1]*d]*n/2
+}
+
+console.log(dArray(1,100,1))
+
 let Rate = (x)=>{
     if(0<x && x<100){
         if (Math.random() * 100 < x) {
@@ -73,7 +83,15 @@ let Rate = (x)=>{
     }else{
         return false
     }
-    
+
+}
+
+let bdKey = (len,arr) =>{
+  let fillKey = new Array(len)
+  for(let i of fillKey.keys()){
+    fillKey[i] = rNF(arr.length)
+  }
+  return fillKey
 }
 
 let lo = (x) => {
@@ -85,6 +103,15 @@ function pt() {
     let y = Math.random() * h;
     let point = { x, y };
     return point
+}
+
+let r = ()=>{
+      return Math.random()
+    }
+let grad = (c1,c2,r) =>{
+
+   let grad = s1.gradient(`l(0,${r},1,${r})${c1}-${c2}`)
+   return grad
 }
 
 
@@ -101,6 +128,7 @@ function pt() {
     })
 
     let light = () => {
+
         var graC = s1.paper.gradient("l(0, 1, 1, 1)black-#A6AEE5-black");
         return graC
     }
@@ -108,12 +136,13 @@ function pt() {
     // const colors = [
     //     '#061E48', '#243360', '#3D4979', '#576193', '#707AAE', '#8B93C9', '#A6AEE5', '#C2C9FF', '#DEE5FF', '#FBFFFF', light()
     // ]
-    
-    
-    
+
+
+
 
     const colors = []
     const colors2 = []
+    const colors3 = []
 
     let pushColors = (arr,color,count)=>{
         for(let i=0;i<count;i++){
@@ -121,7 +150,7 @@ function pt() {
         }
     }
 
-   
+
 
     function makeDiamond() {
         var setMeetPoint = []
@@ -172,7 +201,7 @@ function pt() {
 
             let [Tp1,Tp2,Tp3] = [...trg]
 
-            
+
 
             s1.paper.polygon(Tp1[0].x,Tp1[0].y,Tp2[0].x,Tp2[0].y,Tp3[0].x,Tp3[0].y).attr({
                 fill:colors[rNF(colors.length)],
@@ -203,7 +232,7 @@ function makeDynamicPoly(){
                `${a.x-5100} ${a.y-5500} ${b.x-300} ${b.y-300} ${c.x-300} ${c.y-300}`
            }
         ],
-        
+
         duration:1000,
         easing:'easeInQuad'
     })
@@ -222,20 +251,20 @@ function makeOwn(){
     let c = 2* eyeWidth
 
     // M584.5, 351.5h483S831.5, 111.5, 584.5, 351.5Z
-    
+
     let eyeG1 =  s1.paper.path(`M${a}h${b}S${c},${eye.y},${a}Z`).attr({
         class:'eyeL',
         strokeWidth:4,
         stroke:'white',
         fill:'none'
-       
+
     }).toDefs()
 
     let eyeG2 = eyeG1.use().attr({
         transform:`translate(800,0) scale(-1,1)`
     }).toDefs()
 
-    
+
 
     let face = s1.paper.circle(400, 100, 350).attr({
         strokeWidth: 4,
@@ -247,17 +276,17 @@ function makeOwn(){
         transform: `translate(300,200) scale(0.3)`
     }).toDefs()
 
-    
+
     for (let i=0;i<10;i++){
         let theGE = gE.use().attr({
             class:'gE'
         })
-        
+
     }
     let discColor = s1.paper.gradient('l(0,0,0,1)black-red')
     let disc = s1.paper.circle(w/2,h/2,h/2).attr({
         fill: discColor,
-        
+
     })
 
     let gEA = s1.selectAll('.gE')
@@ -267,7 +296,7 @@ function makeOwn(){
 
     // .remove()
 
-    
+
 
     anime({
         targets:'.eyeL',
@@ -283,7 +312,7 @@ function makeOwn(){
             { value: '10', duration: 300, easing: 'easeInQuad' },
             { value: '10', duration: 200, easing: 'easeInQuad' },
         ],
-        
+
         easing:'easeInQuad',
         loop:true
     })
@@ -302,14 +331,14 @@ function makeOwn(){
         easing:'linear',
         loop:true
     })
-   
 
-    
+
+
 
 }
 
 //makeOwn()
-    
+
 function makeMix(matrixR,spc,changeR){
         let row = matrixR
         let space = spc
@@ -323,7 +352,7 @@ function makeMix(matrixR,spc,changeR){
          pushColors(colors,'blue', 40)
          pushColors(colors,'yellow', 5)
          pushColors(colors,'lightgreen', 1)
-        
+
         for(let i=1;i<row;i++){
             for (let v = 1; v < row; v++) {
                 s1.paper.circle(300 + 2 * space * i, 200 + v * 2 * space, size(i, v)).attr({
@@ -345,7 +374,7 @@ function makeMix(matrixR,spc,changeR){
             var xyNum = strContent.match(regexp2)
             let [x,y] = [xyNum[0],xyNum[1]]
 
-            
+
             if(10<parseInt(x) && parseInt(x)<60 && 20<y && y<60){
                 let getColor = ()=>{
                     pushColors(colors,'red',40)
@@ -386,19 +415,19 @@ function makeMix(matrixR,spc,changeR){
 }
 
     // makeMix(100,25,1.5)
-    
-    
+
+
     // makeMix(20,25,5)
 
-   
+
 
     function makePerspect(data){
-        
+
         let [q, gQ, space, width, height, rotate] = outPut(data)
         s1.selectAll('#Rect_g1').remove()
-       
 
-        
+
+
 
         const colors = [
             'red','blue','lightgreen'
@@ -413,7 +442,7 @@ function makeMix(matrixR,spc,changeR){
             transform: `skewY(30) skewX(-45))`
         }).toDefs()
 
-        
+
         let gRect = s1.paper.g().attr({
             id:'Rect_g1',
             mixBlendMode:'screen'
@@ -430,26 +459,27 @@ function makeMix(matrixR,spc,changeR){
         }
         gRect.transform(`${t(400,0)}`).drag()
 
-        
+
     }
 
-    
-    renderPer(
-        makePerspect,
-        'Matrix1',
-        createInp('row', 50),
-        createInp('vertical', 10),
-        createInp('space', 20),
-        createInp('width', w/2),
-        createInp('height', w/4),
-        createInp('rotate', 20,0)
-    )
+
+    // renderPer(
+    //     makePerspect,
+    //     'Matrix1',
+    //     createInp('row', 50),
+    //     createInp('vertical', 10),
+    //     createInp('space', 20),
+    //     createInp('width', w/2),
+    //     createInp('height', w/4),
+    //     createInp('rotate', 20,0)
+    // )
 
     // funDrag(document.getElementById('inp_box'))
-    
+
     function makeDotted(data){
         s1.selectAll('#dotG').remove()
-        let [width,space,size] = outPut(data)
+        let [rate,space,size] = outPut(data)
+        const width = 10
         let mtx = []
         for(let x=0;x<width;x++){
             for(let y=0;y<width;y++){
@@ -457,18 +487,18 @@ function makeMix(matrixR,spc,changeR){
             }
         }
 
-        pushColors(colors,'blue',100)
-        pushColors(colors,'red',200)
-        pushColors(colors,'yellow', 10)
+        pushColors(colors,c1,100)
+        pushColors(colors,c2,200)
+        pushColors(colors,c3, 10)
 
-        
+
 
         let cir = s1.paper.circle(10,10, size).attr({
             class: 'dotCir_ori',
-            
+
         }).toDefs()
 
-         let g = s1.paper.g().add(s1.selectAll('dotCir')).attr({
+        let g = s1.paper.g().add(s1.selectAll('dotCir')).attr({
              id: 'dotG',
              height: h
          }).drag()
@@ -487,21 +517,28 @@ function makeMix(matrixR,spc,changeR){
                 })
             }
 
+            let grandientC = s1.paper.gradient(`l(0,0,1,1)red-orange`)
+            pushColors(colors3,grandientC,10)
+            pushColors(colors3,'orange',10)
 
-            if(Rate(50) && Rate(50)){
+            if(Rate(rate) && Rate(rate)){
                 let rSize = rNF(5)
                 g.add(
                     s1.paper.circle(dot.x,dot.y,size*rSize).attr({
                     class: 'dotCir',
-                    fill: 'orange',
+                    fill: colors3[rNF(colors3.length)],
                     opacity: .9,
                     })
                 )
-                if(Rate(50)){
-                    pushColors(colors2,'blue',10)
-                    pushColors(colors2, 'grey', 10)
-                    pushColors(colors2, 'yellow', 10)
-                    let ran = 10
+
+
+
+                if(Rate(0)){
+                    pushColors(colors2,'yellow',10)
+                    pushColors(colors2, 'red', 10)
+                    pushColors(colors2, 'orange', 10)
+
+                    let ran = 50
                     for(let i=0;i<ran;i++){
                         g.add(
                             s1.paper.circle(dot.x, dot.y, size * rSize * 0.1*[ran-i]).attr({
@@ -516,21 +553,100 @@ function makeMix(matrixR,spc,changeR){
             }
 
             g.add(use)
-            
-            
+            anime.set('#dotG',{
+              translateX:w/4,
+              translateY:h/10
+            })
+
         }
-       
+
     }
 
-    
+
     // renderPer(
     //     makeDotted,
     //     'Dotted',
-    //     createInp('x-y',50),
-    //     createInp('space', 30),
+    //     createInp('changeRate',100),
+    //     createInp('space', 100),
     //     createInp('size', 30)
     // )
 
 
+
+    // let map_1 = bdKey(100,globleColor)
+
+    function makeUnpredictableGrowth(data,map){
+        s1.selectAll('#rG_2').remove()
+
+        let map1 = map[0]
+
+        let [wid,height,count,ro] = outPut(data)
+        const top = 100
+        let space = width = wid
+
+
+
+        let ptMap = []
+        let g = s1.g().attr({
+          id:'rG_2'
+        })
+
+
+
+        for(let i=0;i<count;i++){
+            let pt = {x:i*space,y:top}
+            ptMap.push(pt)
+        }
+
+        for(let [i,pt] of ptMap.entries()){
+            for(let v=0;v<i;v++){
+                let r = s1.paper.rect(pt.x,pt.y+height/[i]*v-1,width,height/i+1).attr({
+                  class:'rectOri',
+                  fill:colors5[map1[i*v]],
+                  transform:`rotate(${rNF(ro)})`,
+                  opacity:Math.random(0.8,1),
+
+                }).toDefs()
+
+                if(Rate(10)){
+
+                  r.attr({
+                    fill:'none',
+                    stroke:'red',
+                    strokeWidth:4
+                  })
+                }
+
+                let cir = s1.paper.circle(pt.x,pt.y+height/[i]*v-1,height/i+1).attr({
+                  class:'rectOri',
+                  fill:colors5[map1[i*v]],
+                  transform:`rotate(${rNF(ro)})`,
+                  // opacity:Math.random(0.8,1),
+
+                }).toDefs()
+                g.add(r)
+            }
+        }
+
+        lo(s1.selectAll('.rectOri').length)
+    }
+
+    let colors5 = []
+    pushColors(colors5,'#F97617',5)
+    pushColors(colors5,'#97A500',10)
+    pushColors(colors5,'#00B7FF',50)
+    pushColors(colors5,grad('#00B7FF','#97A500',r()),30)
+
+
+
+    renderPer(
+      makeUnpredictableGrowth,
+      'unpredict',
+      [bdKey(4000,colors5)],
+      createInp('width',100,1),
+      createInp('height',1000,1),
+      createInp('count',30,1),
+      createInp('rotate',10,1)
+    )
 
 }
